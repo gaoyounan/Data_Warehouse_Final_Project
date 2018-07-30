@@ -10,6 +10,8 @@ from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
 
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
+import org.apache.spark.sql.functions.regexp_replace
+
 from pyspark.ml import PipelineModel
 
 from StopWord import load_stop_word
@@ -49,6 +51,7 @@ regexTokenizer = RegexTokenizer(
 
 # stop words
 add_stopwords = load_stop_word()
+
 stopwordsRemover = StopWordsRemover(
     inputCol="words", outputCol="filtered").setStopWords(add_stopwords)
 
