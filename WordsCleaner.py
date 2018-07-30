@@ -7,7 +7,7 @@ from pyspark.sql.types import ArrayType, StringType
 import re
 
 
-class WordCleaner(Transformer, HasInputCol, HasOutputCol):
+class WordCleaner(Transformer,PysparkReaderWriter, HasInputCol, HasOutputCol):
     @keyword_only
     def __init__(self, inputCol=None, outputCol=None):
         super(WordCleaner, self).__init__()
@@ -18,6 +18,18 @@ class WordCleaner(Transformer, HasInputCol, HasOutputCol):
     def setParams(self, inputCol=None, outputCol=None):
         kwargs = self._input_kwargs
         return self._set(**kwargs)
+
+    def getParamsAsListOfStrings(self):
+        paramValuesAsStrings = []
+        return paramValuesAsStrings
+
+    @classmethod
+    def createAndInitialisePyObj(cls, paramsAsListOfStrings):
+        py_obj = cls()
+        py_obj.setStringParam(paramsAsListOfStrings[0])
+        py_obj.setListOfStringsParam(paramsAsListOfStrings[1].split(","))
+        py_obj.setIntParam(int(paramsAsListOfStrings[2]))
+        return py_obj
 
     def _transform(self, dataset):
         def f(s):

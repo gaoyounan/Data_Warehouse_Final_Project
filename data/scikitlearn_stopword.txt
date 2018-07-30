@@ -316,3 +316,9 @@ your
 yours
 yourself
 yourselves
+http
+https
+amp
+rt
+t
+c

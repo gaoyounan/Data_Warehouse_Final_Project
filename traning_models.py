@@ -45,8 +45,8 @@ print("Test Dataset Count: " + str(testData.count()))
 print("Type of data", type(trainingData))
 
 # regular expression tokenizer
-regexTokenizer = WordCleaner(
-    inputCol="SentimentText", outputCol="words")
+regexTokenizer = RegexTokenizer(
+    inputCol="SentimentText", outputCol="words", pattern="\\W")
 
 # stop words
 add_stopwords = load_stop_word()
