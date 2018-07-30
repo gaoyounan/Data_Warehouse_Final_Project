@@ -14,10 +14,8 @@ df_input = df_input.drop(df_input.columns[1], axis=1)
 df_input = df_input.drop(df_input.columns[1], axis=1)
 
 print(df_input.shape)
-df_input.rename(columns={
-    0: 'Sentiment',
-    1: 'SentimentText'
-},
-    inplace=True
-)
-df_input.to_csv('traning_dataset.csv', index=False)
+df_input.columns = ['Sentiment', 'SentimentText']
+df_input = df_input.replace(0, -1)
+df_input = df_input.replace(2, 0)
+df_input = df_input.replace(4, 1)
+df_input.to_csv('data/traning_dataset.csv', index=False)
