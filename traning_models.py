@@ -9,8 +9,7 @@ from pyspark.ml import Pipeline
 from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
 
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
-
-import org.apache.spark.sql.functions.regexp_replace
+from  WordsCleaner import WordCleaner
 
 from pyspark.ml import PipelineModel
 
@@ -46,8 +45,8 @@ print("Test Dataset Count: " + str(testData.count()))
 print("Type of data", type(trainingData))
 
 # regular expression tokenizer
-regexTokenizer = RegexTokenizer(
-    inputCol="SentimentText", outputCol="words", pattern="\\W")
+regexTokenizer = WordCleaner(
+    inputCol="SentimentText", outputCol="words")
 
 # stop words
 add_stopwords = load_stop_word()
