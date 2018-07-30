@@ -3,23 +3,23 @@ from pyspark import SparkContext
 from pyspark.sql.functions import col
 
 from pyspark.ml.feature import RegexTokenizer, StopWordsRemover, CountVectorizer
-from pyspark.ml.classification import LogisticRegression, NaiveBayes, LinearSVC
+from pyspark.ml.classification import LogisticRegression, NaiveBayes, LinearSVC,RandomForestClassifier
 
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
 
-from pyspark.ml.evaluation import BinaryClassificationEvaluator, MulticlassClassificationEvaluator
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
-#from pyspark.ml import PipelineModel
+# from pyspark.ml import PipelineModel
 
 sc = SparkContext()
 sqlContext = SQLContext(sc)
 data = sqlContext.read.format('com.databricks.spark.csv').options(
-    header='true', inferschema='true').load('traning_dataset.csv')
+    header='true', inferschema='true').load('data/traning_dataset.csv')
 
-drop_list = ['ItemID']
-data = data.select(
-    [column for column in data.columns if column not in drop_list])
+# drop_list = ['ItemID']
+# data = data.select(
+#     [column for column in data.columns if column not in drop_list])
 data.show(5)
 
 data.printSchema()
@@ -39,7 +39,7 @@ data.groupBy("SentimentText") \
 print("Training Dataset Count: " + str(trainingData.count()))
 print("Test Dataset Count: " + str(testData.count()))
 
-print("Type of data",type(trainingData))
+print("Type of data", type(trainingData))
 
 # regular expression tokenizer
 regexTokenizer = RegexTokenizer(
@@ -61,7 +61,7 @@ label_stringIdx = StringIndexer(inputCol="Sentiment", outputCol="label")
 lr = NaiveBayes(smoothing=1.0, modelType="multinomial")
 # lr = LinearSVC(maxIter=10, regParam=0.1)
 
-#lrModel = lr.fit(trainingData)
+# lrModel = lr.fit(trainingData)
 
 
 # build the pipeline

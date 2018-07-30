@@ -1,23 +1,23 @@
 import pandas as pd
+import numpy as np
 
 inputFiles = 'data/training.1600000.processed.noemoticon.csv'
-outputFile = 'data/traning1_1dataset.csv'
 
-df_input = pd.read_csv(inputFiles, encoding='utf-8')
-df_output = pd.read_csv(outputFile, encoding='utf-8')
+df_input = pd.read_csv(inputFiles, encoding='ISO-8859-1')
+
 count = 0
-print(df_output.shape)
-for index, row in df_input.iterrows():
-    r = ''
-    if row[0] == "0":
-        r = [[row[1], "negative", row[4]]]
-    if row[0] == "2":
-        r = [[row[1], "neutral", row[4]]]
-    if row[0] == "4":
-        r = [[row[1], "positive", row[4]]]
+print(df_input.shape)
 
-    df_output.append(r, ignore_index=True)
-    count += 1
-    if count == 100:
-        break
-print(df_output.shape)
+df_input = df_input.drop(df_input.columns[1], axis=1)
+df_input = df_input.drop(df_input.columns[1], axis=1)
+df_input = df_input.drop(df_input.columns[1], axis=1)
+df_input = df_input.drop(df_input.columns[1], axis=1)
+
+print(df_input.shape)
+df_input.rename(columns={
+    0: 'Sentiment',
+    1: 'SentimentText'
+},
+    inplace=True
+)
+df_input.to_csv('traning_dataset.csv', index=False)

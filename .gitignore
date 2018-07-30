@@ -185,5 +185,6 @@ venv.bak/
 ### Python Patch ###
 .venv/
 
-
+*.csv
+data/*.csv
 # End of https://www.gitignore.io/api/python,pycharm+all
