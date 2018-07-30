@@ -3,14 +3,16 @@ from pyspark import SparkContext
 from pyspark.sql.functions import col
 
 from pyspark.ml.feature import RegexTokenizer, StopWordsRemover, CountVectorizer
-from pyspark.ml.classification import LogisticRegression, NaiveBayes, LinearSVC,RandomForestClassifier
+from pyspark.ml.classification import LogisticRegression, NaiveBayes, LinearSVC, RandomForestClassifier
 
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
 
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
-# from pyspark.ml import PipelineModel
+from pyspark.ml import PipelineModel
+
+from StopWord import load_stop_word
 
 sc = SparkContext()
 sqlContext = SQLContext(sc)
@@ -46,7 +48,7 @@ regexTokenizer = RegexTokenizer(
     inputCol="SentimentText", outputCol="words", pattern="\\W")
 
 # stop words
-add_stopwords = ["http", "https", "amp", "rt", "t", "c", "the"]
+add_stopwords = load_stop_word()
 stopwordsRemover = StopWordsRemover(
     inputCol="words", outputCol="filtered").setStopWords(add_stopwords)
 
