@@ -9,7 +9,8 @@ from pyspark.ml import Pipeline
 from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
 
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
-from  WordsCleaner import WordCleaner
+# from WordsCleaner import WordCleaner
+from pyspark.ml.feature import ChiSqSelector
 
 from pyspark.ml import PipelineModel
 
@@ -61,8 +62,8 @@ countVectors = CountVectorizer(
 # convert string labels to indexes
 label_stringIdx = StringIndexer(inputCol="Sentiment", outputCol="label")
 
+lr = NaiveBayes(smoothing=1.0, modelType="multinomial", labelCol='label', featuresCol="features")
 # lr = LogisticRegression(maxIter=10, regParam=0.3, elasticNetParam=0)
-lr = NaiveBayes(smoothing=1.0, modelType="multinomial")
 # lr = LinearSVC(maxIter=10, regParam=0.1)
 
 # lrModel = lr.fit(trainingData)
@@ -97,6 +98,6 @@ accuracy = evaluator.evaluate(predictions)
 print("Accuracy: %g" % (accuracy))
 
 # save the trained model for future use
-pipelineFit.write().overwrite().save("piplineModel")
+pipelineFit.write().overwrite().save("piplineNBModel")
 
 # PipelineModel.load("logreg.model")
