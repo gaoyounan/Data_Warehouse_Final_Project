@@ -48,9 +48,9 @@ print("_________________________________")
 X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
                                                     random_state=42)
 
-count_vect = CountVectorizer(max_features=1500, lowercase=True, ngram_range=(3, 5), analyzer="word")
-selectKBest = SelectKBest(chi2, k=500)
-truncatedSVD = TruncatedSVD(n_components=1000, n_iter=7, random_state=42)
+count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 6), analyzer="word")
+selectKBest = SelectKBest(chi2, k=2000)
+truncatedSVD = TruncatedSVD(n_components=3000, n_iter=7, random_state=42)
 combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
 dense_transformer = DenseTransformer()
 
@@ -78,7 +78,7 @@ print("Create model")
 clf_vot = clf_vot.fit(X_train, y_train)
 print("fit Model")
 prd_ = clf_vot.transform(X_test)
-print(prd_.head(15))
+print(prd_)
 print("transform Model")
 pred_ = list()
 for x, y, z in prd_:
