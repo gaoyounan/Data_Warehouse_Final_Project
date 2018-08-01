@@ -17,6 +17,7 @@ import pandas as pd
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.decomposition import TruncatedSVD
 import random
+import re
 
 df_input = pd.read_csv('data/traning_dataset.csv', encoding='ISO-8859-1')
 
@@ -28,7 +29,12 @@ data = data[indexs]
 label = label[indexs]
 
 # Clead data
-print(data.head())
+print("_________________________________")
+print(data.head(15))
+for x, index in data.iteritems():
+    x = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", str(x)).split()).lower().split()
+print(data.head(15))
+print("_________________________________")
 stop = stopwords.words('english')
 data = data.str.replace('[^\w\s]', '')
 data = data.apply(lambda x: " ".join(x for x in x.split() if x not in stop))
