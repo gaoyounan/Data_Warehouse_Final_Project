@@ -2,9 +2,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC
 from sklearn.externals import joblib
 
-from nltk.corpus import stopwords
-from textblob import TextBlob
-from textblob import Word
+from string_cleaner import cleanText
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import VotingClassifier
@@ -31,16 +29,7 @@ label = label[indexs]
 # Clead data
 print("_________________________________")
 print(data.head(15))
-for x, index in data.iteritems():
-    x = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", str(x)).split()).lower().split()
-stop = stopwords.words('english')
-data = data.str.replace('[^\w\s]', '')
-data = data.apply(lambda x: " ".join(x for x in x.split() if x not in stop))
-freq = pd.Series(' '.join(data).split()).value_counts()[:10]
-freq = list(freq.index)
-data = data.apply(lambda x: " ".join(x for x in x.split() if x not in freq))
-data[:5].apply(lambda x: str(TextBlob(x).correct()))
-data = data.apply(lambda x: " ".join([Word(word).lemmatize() for word in x.split()]))
+data = cleanText(data)
 print("_________________________________")
 print(data.head(15))
 print("_________________________________")
