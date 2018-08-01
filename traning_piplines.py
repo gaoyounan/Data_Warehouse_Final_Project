@@ -1,9 +1,9 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.externals import joblib
-
+import nltk
 from string_cleaner import cleanText
-
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import VotingClassifier
 from mlxtend.preprocessing import DenseTransformer
@@ -38,7 +38,8 @@ print("_________________________________")
 X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
                                                     random_state=42)
 
-count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 3), analyzer="word")
+# count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 3), analyzer="word")
+count_vect = CountVectorizer(min_df=1, tokenizer=nltk.word_tokenize)
 selectKBest = SelectKBest(chi2, k=2000)
 truncatedSVD = TruncatedSVD(n_components=3000, n_iter=7, random_state=42)
 combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
@@ -48,7 +49,7 @@ clf_LG = Pipeline([
     ('count_v', count_vect),
     ('features', combined_features),
     ('to_dens', DenseTransformer()),
-    ('lgc', DecisionTreeClassifier())])
+    ('lgc', RandomForestClassifier(max_depth=100, random_state=0))])
 
 clf_NB = Pipeline([
     ('count_v', count_vect),
