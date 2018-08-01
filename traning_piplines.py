@@ -17,14 +17,17 @@ from sklearn.decomposition import TruncatedSVD
 import random
 import re
 
-df_input = pd.read_csv('data/traning_dataset.csv', encoding='ISO-8859-1')
+df_input = pd.read_csv('data/traning_dataset2.csv', encoding='ISO-8859-1')
 
 data = df_input['SentimentText']
 label = df_input['Sentiment']
+print(data.head(10))
+print(label.head(10))
 
-indexs = random.sample(range(len(df_input)), 100000)
+indexs = random.sample(range(len(df_input)), len(df_input))
 data = data[indexs]
 label = label[indexs]
+print(data.shape)
 
 # Clead data
 print("_________________________________")
@@ -33,7 +36,7 @@ data = cleanText(data)
 print("_________________________________")
 print(data.head(15))
 print("_________________________________")
-
+exit()
 X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
                                                     random_state=42)
 
@@ -66,19 +69,19 @@ clf_vot = Pipeline([['lnb', VotingClassifier(estimators=[('plgc', clf_LG), ('pnb
 print("Create model")
 clf_vot = clf_vot.fit(X_train, y_train)
 print("fit Model")
-prd_ = clf_vot.transform(X_test)
-print(prd_)
-print("transform Model")
-pred_ = list()
-for x, y, z in prd_:
-    if x == y:
-        pred_.append(x)
-    elif y == z:
-        pred_.append(y)
-    elif x == z:
-        pred_.append(z)
-    else:
-        pred_.append(x)
-
+prd_ = clf_vot.predict(X_test)
+# print(prd_)
+# print("transform Model")
+# pred_ = list()
+# for x, y, z in prd_:
+#     if x == y:
+#         pred_.append(x)
+#     elif y == z:
+#         pred_.append(y)
+#     elif x == z:
+#         pred_.append(z)
+#     else:
+#         pred_.append(x)
+#
 joblib.dump(clf_vot, 'tweet_analyzer.pkl')
-print(accuracy_score(y_test, pred_))
+print(accuracy_score(y_train, prd_))
