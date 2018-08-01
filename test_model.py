@@ -24,12 +24,16 @@ df_input = pd.read_csv('data/traning_dataset2.csv', encoding='ISO-8859-1')
 
 data = df_input['SentimentText']
 label = df_input['Sentiment']
-print(data.head(10))
-print(label.head(10))
 
 indexs = random.sample(range(len(df_input)), 10)
 data = data[indexs]
 label = label[indexs]
+
 print(data.shape)
-output = pd.DataFrame([data, create_model_predict(data)])
+
+prd=create_model_predict(data)
+prd=pd.Series(prd)
+data=pd.Series(data.values)
+output = pd.concat([data,prd ],axis=1)
+
 print(output)
