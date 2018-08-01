@@ -84,4 +84,4 @@ prd_ = clf_vot.predict(X_test)
 #         pred_.append(x)
 #
 joblib.dump(clf_vot, 'tweet_analyzer.pkl')
-print(accuracy_score(y_train, prd_))
+print(accuracy_score(y_test, prd_))
