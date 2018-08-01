@@ -1,5 +1,6 @@
 from sklearn.externals import joblib
 from string_cleaner import cleanText
+import numpy as np
 
 
 class model_pipline:
@@ -9,8 +10,11 @@ class model_pipline:
         self.filename = 'tweet_analyzer.pkl'
         self.pipeline_model = joblib.load(self.filename)
 
-    def predic_data(self, data):
-        data = cleanText(data)
+    def predic_data(self, data_old):
+        data = cleanText(data_old)
+        for index, row in data.iteritems():
+            if row is None:
+                data[index] = data_old[index]
         prd_ = self.pipeline_model.predict(data)
         return prd_
 
