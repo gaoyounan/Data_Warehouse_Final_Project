@@ -36,7 +36,7 @@ data = cleanText(data)
 print("_________________________________")
 print(data.head(15))
 print("_________________________________")
-exit()
+
 X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
                                                     random_state=42)
 
