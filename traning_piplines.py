@@ -33,8 +33,6 @@ print("_________________________________")
 print(data.head(15))
 for x, index in data.iteritems():
     x = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", str(x)).split()).lower().split()
-print(data.head(15))
-print("_________________________________")
 stop = stopwords.words('english')
 data = data.str.replace('[^\w\s]', '')
 data = data.apply(lambda x: " ".join(x for x in x.split() if x not in stop))
@@ -43,7 +41,9 @@ freq = list(freq.index)
 data = data.apply(lambda x: " ".join(x for x in x.split() if x not in freq))
 data[:5].apply(lambda x: str(TextBlob(x).correct()))
 data = data.apply(lambda x: " ".join([Word(word).lemmatize() for word in x.split()]))
-print(data.head())
+print("_________________________________")
+print(data.head(15))
+print("_________________________________")
 
 X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
                                                     random_state=42)
@@ -56,19 +56,19 @@ dense_transformer = DenseTransformer()
 
 clf_LG = Pipeline([
     ('count_v', count_vect),
-#    ('features', combined_features),
+    ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('lgc', DecisionTreeClassifier())])
 
 clf_NB = Pipeline([
     ('count_v', count_vect),
-#    ('features', combined_features),
+    ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('lnb', GaussianNB())])
 
 clf_SVC = Pipeline([
     ('count_v', count_vect),
-#    ('features', combined_features),
+    ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('svc', LinearSVC(C=0.75, random_state=0, max_iter=500))])
 
@@ -78,7 +78,7 @@ print("Create model")
 clf_vot = clf_vot.fit(X_train, y_train)
 print("fit Model")
 prd_ = clf_vot.transform(X_test)
-# print(prd_)
+print(prd_.head(15))
 print("transform Model")
 pred_ = list()
 for x, y, z in prd_:
