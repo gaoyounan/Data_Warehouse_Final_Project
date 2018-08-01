@@ -21,8 +21,6 @@ df_input = pd.read_csv('data/traning_dataset2.csv', encoding='ISO-8859-1')
 
 data = df_input['SentimentText']
 label = df_input['Sentiment']
-print(data.head(10))
-print(label.head(10))
 
 indexs = random.sample(range(len(df_input)), len(df_input))
 data = data[indexs]
@@ -40,7 +38,7 @@ print("_________________________________")
 X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
                                                     random_state=42)
 
-count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 6), analyzer="word")
+count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 3), analyzer="word")
 selectKBest = SelectKBest(chi2, k=2000)
 truncatedSVD = TruncatedSVD(n_components=3000, n_iter=7, random_state=42)
 combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
