@@ -1,7 +1,10 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC
 from sklearn.externals import joblib
-from sklearn.linear_model import LogisticRegression
+
+from nltk.corpus import stopwords
+from textblob import TextBlob
+from textblob import Word
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import VotingClassifier
@@ -24,12 +27,24 @@ indexs = random.sample(range(len(df_input)), 100000)
 data = data[indexs]
 label = label[indexs]
 
+# Clead data
+print(data.head())
+stop = stopwords.words('english')
+data = data.str.replace('[^\w\s]', '')
+data = data.apply(lambda x: " ".join(x for x in x.split() if x not in stop))
+freq = pd.Series(' '.join(data).split()).value_counts()[:10]
+freq = list(freq.index)
+data = data.apply(lambda x: " ".join(x for x in x.split() if x not in freq))
+data[:5].apply(lambda x: str(TextBlob(x).correct()))
+data = data.apply(lambda x: " ".join([Word(word).lemmatize() for word in x.split()]))
+print(data.head())
+
 X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
                                                     random_state=42)
 
-count_vect = CountVectorizer()
+count_vect = CountVectorizer(max_features=1000, lowercase=True, ngram_range=(1, 1), analyzer="word")
 selectKBest = SelectKBest(chi2, k=100)
-truncatedSVD = TruncatedSVD(n_components=250, n_iter=7, random_state=42)
+truncatedSVD = TruncatedSVD(n_components=500, n_iter=7, random_state=42)
 combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
 dense_transformer = DenseTransformer()
 
