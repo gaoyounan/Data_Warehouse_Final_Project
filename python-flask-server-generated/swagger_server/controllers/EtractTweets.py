@@ -229,26 +229,6 @@ def uploadImagetoCloudinary(status_id):
     # result = cloudinary.uploader.upload("/Users/gaoyounan/Desktop/Summer Term/Data Management/final_project/Code/Data_Warehouse_Final_Project/python-flask-server-generated/swagger_server/controllers/image/" + str(status_id) + '.png', public_id=str(status_id))
 
 
-def controller_exec(status_id, duration, interval):
-    try:
-        thread.start_new_thread(extractTweets, (status_id, duration, interval))
-
-        resultJson = {
-            'result': 'Success'
-            , 'message': 'The machine is doing sentiment analysis, you can check the results anytime!'}
-
-        resultJson = json.dumps(resultJson)
-        print
-        resultJson
-
-    except:
-        print
-        "Error: unable to start thread"
-
-    while 1:
-        pass
-
-
 if __name__ == '__main__':
     status_id = 1022150726200451072
     extractTweets(status_id, 2, 3)

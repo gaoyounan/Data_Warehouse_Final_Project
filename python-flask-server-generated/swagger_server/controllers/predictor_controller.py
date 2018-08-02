@@ -5,6 +5,7 @@ from swagger_server.controllers.StringCleaner import cleanText
 import pandas as pd
 import random
 from swagger_server import util
+from swagger_server.controllers.EtractTweets import extractTweets
 
 
 class model_pipline:
@@ -44,34 +45,21 @@ def get_result_tweet_id(itemid):  # noqa: E501
     """
     this just for testing
     """
-    df_input = pd.read_csv("/home/ubuntu/Data_Warehouse_Final_Project/data/traning_dataset3.csv", encoding='ISO-8859-1')
 
-    data = df_input['SentimentText']
-    label = df_input['Sentiment']
+    extractTweets(itemid, 2, 5)
 
-    indexs = random.sample(range(len(df_input)), 10)
-    data = data[indexs]
-
-    print(data.shape)
-
-    prd = create_model_predict(data)
-    prd = pd.Series(prd)
-    data = pd.Series(data.values)
-    output = pd.concat([data, prd], axis=1)
-    print(output.shape)
-    html = output.to_html('filename.html')
     """
     End of test
     """
-    """
+
     html = "<html>" \
            "<head><title>Tweet Analyzer</title></head>" \
            "<body><h1>Tweet Analyzer</h1>" \
            "<h3>Coming Soon</h3>" \
-           "<h3>" + output + "</h3>" \
-                                    "</body>" \
-                                    "</html>"
-    """
+           "<h3>"   "</h3>" \
+           "</body>" \
+           "</html>"
+
     return html
 
 
