@@ -31,8 +31,6 @@ def cleanText(data):
     stop = stopwords.words('english')
     data = data.str.replace('[^\w\s]', '')
     data = data.apply(lambda x: " ".join(x for x in x.split() if x not in stop))
-    freq = pd.Series(' '.join(data).split()).value_counts()[:10]
-    freq = list(freq.index)
     data = data.apply(lambda x: " ".join(x for x in x.split() if x not in freq))
     data = data.apply(lambda x: " ".join([Word(word).lemmatize() for word in x.split()]))
 
