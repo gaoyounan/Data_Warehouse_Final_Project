@@ -10,6 +10,14 @@ import matplotlib.pyplot as plt
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import json
+
+import thread
+import time
+
+from sklearn.externals import joblib
+from swagger_server.controllers.StringCleaner import cleanText
+import pandas as pd
 
 def get_tweet(tweet):
     text = tweet.text
@@ -34,6 +42,29 @@ def clean_str(string):
 def sentiment_analysis():
         return random.randint(-1,1)
 
+class model_pipline:
+    pipeline_model = None
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.filename = "/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/pipelineModel/tweet_analyzer.pkl"
+        self.pipeline_model = joblib.load(self.filename)
+
+    def predic_data(self, data_old):
+        data = cleanText(data_old)
+        print(data_old)
+        print(data)
+        for index, row in data.iteritems():
+            if row is None:
+                data[index] = data_old[index]
+        prd_ = self.pipeline_model.predict(data)
+        return prd_
+
+
+def sentiment_analysis(data):
+    model = model_pipline()
+    return model.predic_data(data)
+
 def generateESData(tweet):
         doc = {}
         doc['tweet_id'] = tweet.id_str
@@ -45,7 +76,7 @@ def generateESData(tweet):
         doc['retweet_count'] = tweet.retweet_count
         doc['text'] = tweet.text
         doc['favorite_count'] = tweet.favorite_count
-        doc['sentiment_result'] = sentiment_analysis()
+        doc['sentiment_result'] = sentiment_analysis([tweet.text])
         doc['timestamp'] = datetime.now()
         doc['screen_name'] = tweet.user.screen_name
         doc['popular_num'] = tweet.retweet_count + tweet.favorite_count
@@ -60,7 +91,7 @@ _settings = {
   }
 }
 
-def extractTweets(status_id, duration):
+def extractTweets(status_id, duration, interval):
 
 
         for times in range(duration):
@@ -125,7 +156,7 @@ def extractTweets(status_id, duration):
 
                 times = times + 1
                 if times < duration:
-                        time.sleep(300)
+                        time.sleep(interval)
 
 def sentimentStatistics(es, status_id):
 
@@ -177,7 +208,10 @@ def sentimentStatistics(es, status_id):
         ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
                 shadow=True, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.savefig("image/" + str(status_id) + '.png')
+        plt.savefig("/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/swagger_server/controllers/image/" + str(status_id) + '.png')
+        # plt.savefig(
+        #         "/Users/gaoyounan/Desktop/Summer Term/Data Management/final_project/Code/Data_Warehouse_Final_Project/python-flask-server-generated/swagger_server/controllers/image/" + str(
+        #                 status_id) + '.png')
 
 def uploadImagetoCloudinary(status_id):
 
@@ -188,13 +222,33 @@ def uploadImagetoCloudinary(status_id):
         )
 
         result = cloudinary.uploader.upload("/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/swagger_server/controllers/image/" + str(status_id) + '.png', public_id=str(status_id))
+        #result = cloudinary.uploader.upload("/Users/gaoyounan/Desktop/Summer Term/Data Management/final_project/Code/Data_Warehouse_Final_Project/python-flask-server-generated/swagger_server/controllers/image/" + str(status_id) + '.png', public_id=str(status_id))
 
 
+def controller_exec(status_id, duration, interval):
 
+        try:
+                thread.start_new_thread(extractTweets, (status_id, duration, interval))
+
+                resultJson = {
+                        'result':'Success'
+                        , 'message':'The machine is doing sentiment analysis, you can check the results anytime!'}
+
+                resultJson = json.dumps(resultJson)
+                print resultJson
+
+        except:
+                print "Error: unable to start thread"
+
+        while 1:
+                pass
 
 if __name__ == '__main__':
 
         status_id = 1022150726200451072
-        extractTweets(status_id , 1)
+        extractTweets(status_id , 2, 3)
+        #print controller_exec(1022150726200451072, 2, 10)
+
+
 
 
