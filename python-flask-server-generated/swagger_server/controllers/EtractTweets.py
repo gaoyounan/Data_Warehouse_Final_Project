@@ -187,7 +187,7 @@ def uploadImagetoCloudinary(status_id):
                 api_secret="F_mpzRKVelD61h5Paet2Gmp7iD4"
         )
 
-        result = cloudinary.uploader.upload("image/" + str(status_id) + '.png', public_id=str(status_id))
+        result = cloudinary.uploader.upload("/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/swagger_server/controllers/image/" + str(status_id) + '.png', public_id=str(status_id))
 
 
 
