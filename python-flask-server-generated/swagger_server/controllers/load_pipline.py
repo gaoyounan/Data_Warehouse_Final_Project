@@ -1,14 +1,13 @@
 from sklearn.externals import joblib
-from string_cleaner import cleanText
-import numpy as np
+from StringCleaner import cleanText
 
 
 class model_pipline:
-
     def __init__(self) -> None:
         super().__init__()
         self.filename = 'tweet_analyzer.pkl'
-        self.pipeline_model = joblib.load(self.filename)
+        if model_pipline == None:
+            self.pipeline_model = joblib.load(self.filename)
 
     def predic_data(self, data_old):
         data = cleanText(data_old)
