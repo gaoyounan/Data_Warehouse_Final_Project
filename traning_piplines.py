@@ -15,6 +15,7 @@ import pandas as pd
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.decomposition import TruncatedSVD
 import random
+from sklearn.feature_extraction.text import TfidfTransformer
 import re
 
 df_input = pd.read_csv('data/traning_dataset2.csv', encoding='ISO-8859-1')
@@ -43,23 +44,27 @@ count_vect = CountVectorizer(max_features=10000, min_df=1, tokenizer=nltk.word_t
 selectKBest = SelectKBest(chi2, k=700)
 truncatedSVD = TruncatedSVD(n_components=5000, n_iter=15, random_state=42)
 combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
+tfidf_transformer = TfidfTransformer()
 dense_transformer = DenseTransformer()
 
 clf_LG = Pipeline([
-    ('count_v', count_vect),
-    ('features', combined_features),
+    # ('count_v', count_vect),
+    # ('features', combined_features),
+    ('tfidf', tfidf_transformer()),
     ('to_dens', DenseTransformer()),
     ('lgc', RandomForestClassifier(max_depth=100, random_state=0))])
 
 clf_NB = Pipeline([
-    ('count_v', count_vect),
-    ('features', combined_features),
+    ('tfidf', tfidf_transformer()),
+    # ('count_v', count_vect),
+    # ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('lnb', GaussianNB())])
 
 clf_SVC = Pipeline([
-    ('count_v', count_vect),
-    ('features', combined_features),
+    ('tfidf', tfidf_transformer()),
+    # ('count_v', count_vect),
+    # ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('svc', LinearSVC(C=0.75, random_state=0, max_iter=500))])
 
