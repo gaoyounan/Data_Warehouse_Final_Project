@@ -3,7 +3,7 @@ from sklearn.svm import LinearSVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.externals import joblib
 import nltk
-from string_cleaner import cleanText
+from StringCleaner import cleanText
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import VotingClassifier
 from mlxtend.preprocessing import DenseTransformer
@@ -16,9 +16,8 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.decomposition import TruncatedSVD
 import random
 from sklearn.feature_extraction.text import TfidfTransformer
-import re
 
-df_input = pd.read_csv('data/traning_dataset.csv', encoding='ISO-8859-1')
+df_input = pd.read_csv("/home/ubuntu/Data_Warehouse_Final_Project/data/traning_dataset.csv", encoding='ISO-8859-1')
 
 data = df_input['SentimentText']
 label = df_input['Sentiment']
@@ -88,6 +87,6 @@ print("Predict data Model")
 #     else:
 #         pred_.append(x)
 #
-joblib.dump(clf_vot, 'tweet_analyzer.pkl')
+joblib.dump(clf_vot, "/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/pipelineModel/tweet_analyzer.pkl")
 print('Save PipeLine')
 print(accuracy_score(y_test, prd_))

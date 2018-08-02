@@ -8,7 +8,8 @@ from swagger_server import util
 
 
 class model_pipline:
-    pipeline_model=None
+    pipeline_model = None
+
     def __init__(self) -> None:
         super().__init__()
         self.filename = "/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/pipelineModel/tweet_analyzer.pkl"
@@ -16,6 +17,8 @@ class model_pipline:
 
     def predic_data(self, data_old):
         data = cleanText(data_old)
+        print(data_old)
+        print(data)
         for index, row in data.iteritems():
             if row is None:
                 data[index] = data_old[index]
@@ -41,14 +44,13 @@ def get_result_tweet_id(itemid):  # noqa: E501
     """
     this just for testing
     """
-    df_input = pd.read_csv("/home/ubuntu/Data_Warehouse_Final_Project/data/traning_dataset2.csv", encoding='ISO-8859-1')
+    df_input = pd.read_csv("/home/ubuntu/Data_Warehouse_Final_Project/data/traning_dataset3.csv", encoding='ISO-8859-1')
 
     data = df_input['SentimentText']
     label = df_input['Sentiment']
 
     indexs = random.sample(range(len(df_input)), 10)
     data = data[indexs]
-    label = label[indexs]
 
     print(data.shape)
 
@@ -56,6 +58,7 @@ def get_result_tweet_id(itemid):  # noqa: E501
     prd = pd.Series(prd)
     data = pd.Series(data.values)
     output = pd.concat([data, prd], axis=1)
+    print(output.shape)
     html = output.to_html('filename.html')
     """
     End of test
