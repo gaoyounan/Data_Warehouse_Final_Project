@@ -1,7 +1,7 @@
 import connexion
 import six
 from swagger_server.controllers.EtractTweets import extractTweets
-from swagger_server.models.byte_array import ByteArray  # noqa: E501
+# from swagger_server.models.byte_array import ByteArray  # noqa: E501
 from swagger_server import util
 
 
