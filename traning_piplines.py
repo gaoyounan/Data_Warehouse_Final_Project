@@ -18,12 +18,12 @@ import random
 from sklearn.feature_extraction.text import TfidfTransformer
 import re
 
-df_input = pd.read_csv('data/traning_dataset2.csv', encoding='ISO-8859-1')
+df_input = pd.read_csv('data/traning_dataset.csv', encoding='ISO-8859-1')
 
 data = df_input['SentimentText']
 label = df_input['Sentiment']
 
-indexs = random.sample(range(len(df_input)), len(df_input))
+indexs = random.sample(range(len(df_input)), 300000)
 data = data[indexs]
 label = label[indexs]
 print(data.shape)
@@ -36,12 +36,12 @@ print("_________________________________")
 print(data.head(15))
 print("_________________________________")
 
-X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
+X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.25,
                                                     random_state=42)
 
 # count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 3), analyzer="word")
 count_vect = CountVectorizer(max_features=10000, min_df=1, tokenizer=nltk.word_tokenize)
-selectKBest = SelectKBest(chi2, k=700)
+selectKBest = SelectKBest(chi2, k=1000)
 truncatedSVD = TruncatedSVD(n_components=5000, n_iter=15, random_state=42)
 combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
 tfidf_transformer = TfidfTransformer()
