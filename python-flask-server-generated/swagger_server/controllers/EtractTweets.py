@@ -52,7 +52,7 @@ class model_pipline:
 
         if data is None:
             data = data_old
-        prd_ = self.pipeline_model.predict(data)
+        prd_ = self.pipeline_model.predict([data])
         return prd_
 
 
