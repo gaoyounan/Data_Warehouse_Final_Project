@@ -11,7 +11,7 @@ class model_pipline:
     pipeline_model=None
     def __init__(self) -> None:
         super().__init__()
-        self.filename = 'C:\\Users\\zaher\\Documents\\Github\\Data_Warehouse_Final_Project\\python-flask-server-generated\\pipelineModel\\tweet_analyzer.pkl'
+        self.filename = "/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/pipelineModel/tweet_analyzer.pkl"
         self.pipeline_model = joblib.load(self.filename)
 
     def predic_data(self, data_old):
@@ -41,8 +41,7 @@ def get_result_tweet_id(itemid):  # noqa: E501
     """
     this just for testing
     """
-    df_input = pd.read_csv('C:\\Users\\zaher\\Documents\\Github\\Data_Warehouse_Final_Project\\python-flask-server-generated\\'
-                           'swagger_server\\controllers\\data\\traning_dataset2.csv', encoding='ISO-8859-1')
+    df_input = pd.read_csv("/home/ubuntu/Data_Warehouse_Final_Project/data/traning_dataset2.csv", encoding='ISO-8859-1')
 
     data = df_input['SentimentText']
     label = df_input['Sentiment']
