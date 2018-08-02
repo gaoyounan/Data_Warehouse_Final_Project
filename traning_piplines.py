@@ -40,8 +40,8 @@ X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.33,
 
 # count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 3), analyzer="word")
 count_vect = CountVectorizer(max_features=10000, min_df=1, tokenizer=nltk.word_tokenize)
-selectKBest = SelectKBest(chi2, k=2000)
-truncatedSVD = TruncatedSVD(n_components=3000, n_iter=7, random_state=42)
+selectKBest = SelectKBest(chi2, k=700)
+truncatedSVD = TruncatedSVD(n_components=5000, n_iter=15, random_state=42)
 combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
 dense_transformer = DenseTransformer()
 
