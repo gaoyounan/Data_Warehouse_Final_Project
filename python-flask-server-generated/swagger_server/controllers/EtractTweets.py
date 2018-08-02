@@ -37,10 +37,6 @@ def clean_str(string):
     return string
 
 
-def sentiment_analysis():
-    return random.randint(-1, 1)
-
-
 class model_pipline:
     pipeline_model = None
 
@@ -53,9 +49,9 @@ class model_pipline:
         data = cleanText(data_old)
         print(data_old)
         print(data)
-        for index, row in data.iteritems():
-            if row is None:
-                data[index] = data_old[index]
+
+        if data is None:
+            data = data_old
         prd_ = self.pipeline_model.predict(data)
         return prd_
 
@@ -76,7 +72,7 @@ def generateESData(tweet):
     doc['retweet_count'] = tweet.retweet_count
     doc['text'] = tweet.text
     doc['favorite_count'] = tweet.favorite_count
-    doc['sentiment_result'] = sentiment_analysis([tweet.text])
+    doc['sentiment_result'] = sentiment_analysis(tweet.text)
     doc['timestamp'] = datetime.now()
     doc['screen_name'] = tweet.user.screen_name
     doc['popular_num'] = tweet.retweet_count + tweet.favorite_count

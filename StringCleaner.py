@@ -27,8 +27,7 @@ def strip_all_entities(text):
 
 
 def cleanText(data):
-    for index, x in data.iteritems():
-        data[index] = strip_all_entities(strip_links(x))
+    data = strip_all_entities(strip_links(data))
     stop = stopwords.words('english')
     data = data.str.replace('[^\w\s]', '')
     data = data.apply(lambda x: " ".join(x for x in x.split() if x not in stop))
