@@ -121,7 +121,7 @@ def es_analysis(tweet_id):
             "favorite_count": reply_favorite_count,
             "text": reply_text
         },
-        "statistics_url": img.url
+        "statistics_url": str(img.url)
     }
 
     dictMerged1 = dict(resultJson.items() + dictSentiment.items())
