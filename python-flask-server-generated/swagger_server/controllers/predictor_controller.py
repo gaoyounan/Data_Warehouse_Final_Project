@@ -1,6 +1,7 @@
 import connexion
 import six
 from swagger_server.controllers.EtractTweets import extractTweets
+from swagger_server.controllers.swagger import es_analysis
 # from swagger_server.models.byte_array import ByteArray  # noqa: E501
 from swagger_server import util
 
@@ -15,7 +16,9 @@ def get_result_tweet_id(itemid):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+
+    json_ = es_analysis(itemid)
+    return json_
 
 
 def get_result_tweet_id_status(itemid, outputstate):  # noqa: E501
