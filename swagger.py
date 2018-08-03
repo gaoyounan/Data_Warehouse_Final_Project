@@ -16,8 +16,8 @@ def es_analysis(tweet_id):
         "size": "100"
     }
 
-    es = Elasticsearch()
-    # es = Elasticsearch("http://54.224.246.198:9200/")
+    # es = Elasticsearch()
+    es = Elasticsearch("http://54.224.246.198:9200/")
     res = es.search(index="tweet_status_index", body=queryBody.copy())
 
     orginal_tweet_id = None
@@ -105,7 +105,7 @@ def es_analysis(tweet_id):
     )
 
     img = cloudinary.CloudinaryImage(tweet_id)
-    print img.url
+    print(img.url)
 
     resultJson = {
         "tweet_id": orginal_tweet_id,
@@ -129,5 +129,7 @@ def es_analysis(tweet_id):
     result = json.dumps(dictMerged1)
     return result
 
-tweet_id = "1022150726200451072"
-print es_analysis(tweet_id)
+#
+# tweet_id = "1022150726200451072"
+# print()
+# es_analysis(tweet_id)
