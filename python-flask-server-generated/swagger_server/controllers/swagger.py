@@ -124,8 +124,8 @@ def es_analysis(tweet_id):
         "statistics_url": str(img.url)
     }
 
-    dictMerged1 = dict(resultJson.items() + dictSentiment.items())
-
+    # dictMerged1 = dict(resultJson.items() + dictSentiment.items())
+    dictMerged1 = {**resultJson, **dictSentiment}
     result = json.dumps(dictMerged1)
     return result
 
