@@ -52,13 +52,14 @@ class model_pipline:
 
         if data is None:
             data = data_old
-        prd_ = self.pipeline_model.predict([data])
+        data = pd.Series([data])
+        prd_ = self.pipeline_model.predict(data)
         return prd_
 
 
 def sentiment_analysis(data):
     model = model_pipline()
-    return model.predic_data(data)
+    return int(model.predic_data(data)[0])
 
 
 def generateESData(tweet):
@@ -120,10 +121,15 @@ def extractTweets(status_id, duration, interval):
 
         query = 'to:' + user
 
+        print("------------query:" + query)
         replies = api.search(q=query, since_id=tweet_id, max_id=max_id, count=100)
+        print("---------------since_id:", str(tweet_id))
+        print("---------------length:", str(len(replies)))
         num = 0
         for reply in replies:
-            if reply.in_reply_to_status_id == status_id:
+            print("---------------in_reply_to_status_id:", str(reply.in_reply_to_status_id))
+            print("---------------status_id:", str(reply.in_reply_to_status_id))
+            if reply.in_reply_to_status_id == int(status_id):
                 reply_id = reply.id
                 replyAction = {
                     "_index": "tweet_status_index",
@@ -143,7 +149,7 @@ def extractTweets(status_id, duration, interval):
                 # client_socket.send((tweet[2] + "\n").encode('utf-8'))
         print(num)
 
-        es = Elasticsearch()
+        es = Elasticsearch("http://54.224.246.198:9200/")
         es.indices.create(index="_settings", body=_settings.copy())
         res = bulk(es, actions)
         es.indices.refresh(index="tweet_status_index")
