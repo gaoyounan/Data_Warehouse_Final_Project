@@ -107,6 +107,7 @@ def es_analysis(tweet_id):
     img = cloudinary.CloudinaryImage(tweet_id)
     # print(img.url)
 
+    print(type(img.url))
     resultJson = {
         "tweet_id": orginal_tweet_id,
         "created_at": orginal_created_at,
