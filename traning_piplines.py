@@ -90,5 +90,5 @@ print("Predict data Model")
 joblib.dump(clf_vot,
             "/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/pipelineModel/tweet_analyzer.pkl")
 print('Save PipeLine')
-print("traning accuracy", accuracy_score(y_train, prd_))
+print("traning accuracy", accuracy_score(y_train, clf_vot.predict(X_train)))
 print("Testing accuracy", accuracy_score(y_test, prd_))
