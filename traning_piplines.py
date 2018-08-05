@@ -35,7 +35,7 @@ print("_________________________________")
 print(data.head(15))
 print("_________________________________")
 
-X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.25,
+X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.1,
                                                     random_state=42)
 
 # count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 3), analyzer="word")
