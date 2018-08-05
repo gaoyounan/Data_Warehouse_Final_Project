@@ -48,7 +48,7 @@ dense_transformer = DenseTransformer()
 
 clf_LG = Pipeline([
     ('count_v', count_vect),
-    # ('features', combined_features),
+    ('features', combined_features),
     ('tfidf', tfidf_transformer),
     ('to_dens', DenseTransformer()),
     ('lgc', RandomForestClassifier(max_depth=100, random_state=0))])
@@ -56,14 +56,14 @@ clf_LG = Pipeline([
 clf_NB = Pipeline([
     ('count_v', count_vect),
     ('tfidf', tfidf_transformer),
-    # ('features', combined_features),
+    ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('lnb', GaussianNB())])
 
 clf_SVC = Pipeline([
     ('count_v', count_vect),
     ('tfidf', tfidf_transformer),
-    # ('features', combined_features),
+    ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('svc', LinearSVC(C=0.75, random_state=0, max_iter=500))])
 
