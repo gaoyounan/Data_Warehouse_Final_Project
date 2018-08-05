@@ -17,14 +17,14 @@ from sklearn.decomposition import TruncatedSVD
 import random
 from sklearn.feature_extraction.text import TfidfTransformer
 
-df_input = pd.read_csv("/home/ubuntu/Data_Warehouse_Final_Project/data/traning_dataset.csv", encoding='ISO-8859-1')
+df_input = pd.read_csv("/home/ubuntu/Data_Warehouse_Final_Project/data/traning_dataset4.csv", encoding='ISO-8859-1')
 
 data = df_input['SentimentText']
 label = df_input['Sentiment']
-
-indexs = random.sample(range(len(df_input)), 300000)
-data = data[indexs]
-label = label[indexs]
+#
+# indexs = random.sample(range(len(df_input)), 300000)
+# data = data[indexs]
+# label = label[indexs]
 print(data.shape)
 
 # Clead data
@@ -87,6 +87,8 @@ print("Predict data Model")
 #     else:
 #         pred_.append(x)
 #
-joblib.dump(clf_vot, "/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/pipelineModel/tweet_analyzer.pkl")
+joblib.dump(clf_vot,
+            "/home/ubuntu/Data_Warehouse_Final_Project/python-flask-server-generated/pipelineModel/tweet_analyzer.pkl")
 print('Save PipeLine')
-print(accuracy_score(y_test, prd_))
+print("traning accuracy", accuracy_score(y_train, prd_))
+print("Testing accuracy", accuracy_score(y_test, prd_))
