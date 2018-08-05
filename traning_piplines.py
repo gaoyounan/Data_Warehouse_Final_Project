@@ -40,30 +40,30 @@ X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.25,
 
 # count_vect = CountVectorizer(max_features=5000, lowercase=True, ngram_range=(3, 3), analyzer="word")
 count_vect = CountVectorizer(max_features=10000, min_df=1, tokenizer=nltk.word_tokenize)
-selectKBest = SelectKBest(chi2, k=1000)
-truncatedSVD = TruncatedSVD(n_components=5000, n_iter=15, random_state=42)
-combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
+# selectKBest = SelectKBest(chi2, k=1000)
+# truncatedSVD = TruncatedSVD(n_components=5000, n_iter=15, random_state=42)
+# combined_features = FeatureUnion([("chi2", truncatedSVD), ("univ_select", selectKBest)])
 tfidf_transformer = TfidfTransformer()
 dense_transformer = DenseTransformer()
 
 clf_LG = Pipeline([
     ('count_v', count_vect),
-    ('features', combined_features),
     ('tfidf', tfidf_transformer),
+    # ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('lgc', RandomForestClassifier(max_depth=100, random_state=0))])
 
 clf_NB = Pipeline([
     ('count_v', count_vect),
     ('tfidf', tfidf_transformer),
-    ('features', combined_features),
+    # ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('lnb', GaussianNB())])
 
 clf_SVC = Pipeline([
     ('count_v', count_vect),
     ('tfidf', tfidf_transformer),
-    ('features', combined_features),
+    # ('features', combined_features),
     ('to_dens', DenseTransformer()),
     ('svc', LinearSVC(C=0.75, random_state=0, max_iter=500))])
 
